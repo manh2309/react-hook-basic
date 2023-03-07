@@ -54,3 +54,6 @@ th {
 tr:nth-child(even) {
   background-color: #545454;
 }
+.text-loading {
+  text-align: center;
+}

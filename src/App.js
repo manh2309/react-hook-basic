@@ -2,8 +2,15 @@ import logo from "./logo.svg";
 import "./App.css";
 import Nav from "./views/Nav";
 import Todos from "./views/Todos";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Covid from "./views/Covid";
+import CountDown from "./views/Countdown";
+import CDHook from "./views/CountdownHook";
+import Blog from "./views/Blog";
+import DetailBlog from "./views/DetailBlog";
+import AddBlog from "./views/Addblog";
 import { useState, useEffect } from "react";
+import NotFound from "./views/NotFound";
 const App = () => {
   const [name, setName] = useState("Manh");
   const [address, setAddress] = useState("");
@@ -41,37 +48,58 @@ const App = () => {
     newDataTodos = newDataTodos.filter((item) => item.id !== id);
     setTodos(newDataTodos);
   };
+
   return (
-    <>
-      <div className="App">
-        <header className="App-header">
-          <Nav />
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1>Hello World!</h1>
-          <h3>Covid 19 Tracking in Vietnam:</h3>
-          <div>
-            {/* <Todos
-              todos={todos}
-              title={"All todos"}
-              deleteDataTodos={deleteDataTodos}
-            />
-            <Todos
-              todos={todos.filter((item) => item.type === "Manh1")}
-              title={"todos Manh1"}
-              deleteDataTodos={deleteDataTodos}
-            />
-            <input
-              type="text"
-              value={address}
-              onChange={(event) => handleChangeName(event)}
-            />
-            <br />
-            <button onClick={(event) => handleClick(event)}>Click me</button> */}
-            <Covid />
-          </div>
-        </header>
-      </div>
-    </>
+    <Router>
+      <>
+        <div className="App">
+          <header className="App-header">
+            <Nav />
+            <img src={logo} className="App-logo" alt="logo" />
+
+            <Switch>
+              <Route exact path="/">
+                {/* <h3>Covid 19 Tracking in Vietnam:</h3> */}
+                <Covid />
+              </Route>
+              <Route path="/timer">
+                <CountDown />
+                <hr />
+                <CDHook />
+              </Route>
+              <Route path="/todos">
+                <Todos
+                  todos={todos}
+                  title={"All todos"}
+                  deleteDataTodos={deleteDataTodos}
+                />
+                <input
+                  type="text"
+                  value={address}
+                  onChange={(event) => handleChangeName(event)}
+                />
+                <br />
+                <button onClick={(event) => handleClick(event)}>
+                  Click me
+                </button>
+              </Route>
+              <Route path="/blogs" exact>
+                <Blog />
+              </Route>
+              <Route path="/blogs/:id">
+                <DetailBlog />
+              </Route>
+              <Route path="/add-new-blog">
+                <AddBlog />
+              </Route>
+              <Route path="*">
+                <NotFound />
+              </Route>
+            </Switch>
+          </header>
+        </div>
+      </>
+    </Router>
   );
 };
 
