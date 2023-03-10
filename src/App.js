@@ -11,6 +11,7 @@ import DetailBlog from "./views/DetailBlog";
 import AddBlog from "./views/Addblog";
 import { useState, useEffect } from "react";
 import NotFound from "./views/NotFound";
+import YoutubeSearch from "./views/YoutubeSearch";
 const App = () => {
   const [name, setName] = useState("Manh");
   const [address, setAddress] = useState("");
@@ -91,6 +92,9 @@ const App = () => {
               </Route>
               <Route path="/add-new-blog">
                 <AddBlog />
+              </Route>
+              <Route path="/secret">
+                <YoutubeSearch />
               </Route>
               <Route path="*">
                 <NotFound />
