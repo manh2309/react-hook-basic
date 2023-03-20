@@ -25,10 +25,10 @@ const YoutubeSearch = () => {
         q: query,
       },
     });
-    if (res1 && res1.items) {
-      let raw = res1.items;
+    if (res1 && res1.data && res1.data.items) {
+      let raw = res1.data.items;
+      let results = [];
       if (raw && raw.length > 0) {
-        let results = [];
         raw.map((item) => {
           let object = {};
           object.id = item.id.videoId;
@@ -39,10 +39,10 @@ const YoutubeSearch = () => {
 
           results.push(object);
         });
-        console.log(">>> Checl result ", results);
       }
+      console.log(">>>Check resuls:", results);
+      setVideos(results);
     }
-    console.log("Check response", res1);
   };
   return (
     <div className="youtube-search-container">
@@ -57,33 +57,33 @@ const YoutubeSearch = () => {
           Search
         </button>
       </div>
-      <div className="yt-result">
-        <div className="left">
-          <iframe
-            className="iframe-yt"
-            src="https://www.youtube.com/embed/YbmvFEXZG7Q?list=PLncHg6Kn2JT4xzJyhXfmJ53dzwVbq-S_E"
-            title="#30.2 Design Giao Diện &amp; Hoàn Thiện Chức Năng &#39;Search Youtube&#39; với Google APIs và React Hook"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          ></iframe>
-        </div>
-        <div className="right">
-          <div className="title">
-            #25 HOC - Higher Order Components Với React.JS | React Cơ Bản Cho
-            Beginners Từ A đến Z
-          </div>
-          <div className="created-add">
-            Created At:{" "}
-            {moment("2021-09-14T11:00:11Z").format("DD-MM-YYYY HH:mm:ss A")}
-          </div>
-          <div className="author">Author: HỎI DÂN IT </div>
-          <div className="description">     
-            HỌC, HỌC NỮA, HỌC MÃI, và cuối cùng đi sử dụng HOC, một công nghệ
-            của React giúp chúng ta viết code ít hơn cũng như tái ...
-          </div>
-        </div>
-      </div>
+      {videos &&
+        videos.length > 0 &&
+        videos.map((item) => {
+          return (
+            <div className="yt-result" key={item.id}>
+              <div className="left">
+                <iframe
+                  className="iframe-yt"
+                  src={`https://www.youtube.com/embed/${item.id}`}
+                  title="#30.2 Design Giao Diện &amp; Hoàn Thiện Chức Năng &#39;Search Youtube&#39; với Google APIs và React Hook"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="right">
+                <div className="title">{item.title}</div>
+                <div className="created-add">
+                  Created At:
+                  {moment(item.createdAt).format("DD-MM-YYYY HH:mm:ss A")}
+                </div>
+                <div className="author">Author: {item.author}</div>
+                <div className="description">{item.description}</div>
+              </div>
+            </div>
+          );
+        })}
     </div>
   );
 };
